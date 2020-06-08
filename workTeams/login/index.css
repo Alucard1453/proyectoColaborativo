@@ -1,0 +1,42 @@
+.separador{
+    height: 2em;
+}
+
+.card-panel{
+	padding-top: 5px;
+	height: 30px !important;
+	color: white;
+}
+
+.morado{
+	background-color: #7952b3;
+}
+
+@media only screen and (max-width: 600px) {
+    #imagenlogin{
+		display: none;
+	}
+
+	#navspace{
+		display: none;
+	}
+}
+
+#imagenlogin{
+    background-image: url('../Resources/loginimg.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+	background-attachment: local;
+	/* padding: 0%; */
+	/* margin-top: 60px; */
+    min-height: 575px;
+}
+
+#register-form{
+    /*margin-top: 20%;*/
+    padding: 20%;
+}
+
+button{
+    width: 100%;
+}
