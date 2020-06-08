@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-06-2020 a las 00:00:45
+-- Tiempo de generación: 09-06-2020 a las 01:03:24
 -- Versión del servidor: 10.1.29-MariaDB
 -- Versión de PHP: 7.2.0
 
@@ -74,6 +74,15 @@ CREATE TABLE `estado` (
   `nomEstado` varchar(20) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
+--
+-- Volcado de datos para la tabla `estado`
+--
+
+INSERT INTO `estado` (`idEstado`, `nomEstado`) VALUES
+(1, 'Sin Asignar'),
+(2, 'En Curso'),
+(3, 'Finalizado');
+
 -- --------------------------------------------------------
 
 --
@@ -82,7 +91,8 @@ CREATE TABLE `estado` (
 
 CREATE TABLE `participantes` (
   `idProyecto` int(11) NOT NULL,
-  `idUsuario` int(11) NOT NULL
+  `idUsuario` int(11) NOT NULL,
+  `rol` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -114,6 +124,26 @@ CREATE TABLE `release` (
   `fechaFin` varchar(12) COLLATE utf8_spanish_ci NOT NULL,
   `estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `rol`
+--
+
+CREATE TABLE `rol` (
+  `idRol` int(11) NOT NULL,
+  `nombreRol` varchar(12) COLLATE utf8_spanish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `rol`
+--
+
+INSERT INTO `rol` (`idRol`, `nombreRol`) VALUES
+(1, 'Lider'),
+(2, 'Stakeholder'),
+(3, 'Programador');
 
 -- --------------------------------------------------------
 
@@ -196,7 +226,8 @@ ALTER TABLE `estado`
 --
 ALTER TABLE `participantes`
   ADD KEY `idProyecto` (`idProyecto`),
-  ADD KEY `idUsuario` (`idUsuario`);
+  ADD KEY `idUsuario` (`idUsuario`),
+  ADD KEY `rol` (`rol`);
 
 --
 -- Indices de la tabla `proyecto`
@@ -213,6 +244,12 @@ ALTER TABLE `release`
   ADD PRIMARY KEY (`idRelease`),
   ADD KEY `idProyecto` (`idProyecto`),
   ADD KEY `estado` (`estado`);
+
+--
+-- Indices de la tabla `rol`
+--
+ALTER TABLE `rol`
+  ADD PRIMARY KEY (`idRol`);
 
 --
 -- Indices de la tabla `tarea`
@@ -262,7 +299,7 @@ ALTER TABLE `comentariosrelease`
 -- AUTO_INCREMENT de la tabla `estado`
 --
 ALTER TABLE `estado`
-  MODIFY `idEstado` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idEstado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `proyecto`
@@ -275,6 +312,12 @@ ALTER TABLE `proyecto`
 --
 ALTER TABLE `release`
   MODIFY `idRelease` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `rol`
+--
+ALTER TABLE `rol`
+  MODIFY `idRol` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `tarea`
@@ -317,7 +360,8 @@ ALTER TABLE `comentariosrelease`
 --
 ALTER TABLE `participantes`
   ADD CONSTRAINT `participantes_ibfk_1` FOREIGN KEY (`idProyecto`) REFERENCES `proyecto` (`idProyecto`),
-  ADD CONSTRAINT `participantes_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`);
+  ADD CONSTRAINT `participantes_ibfk_2` FOREIGN KEY (`idUsuario`) REFERENCES `usuario` (`idUsuario`),
+  ADD CONSTRAINT `participantes_ibfk_3` FOREIGN KEY (`rol`) REFERENCES `rol` (`idRol`);
 
 --
 -- Filtros para la tabla `proyecto`
