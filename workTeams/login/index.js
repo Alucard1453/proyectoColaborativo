@@ -59,6 +59,7 @@ function ingresarUsuario(user,pass) {
 }
 
 function validarAccesoUsuario(user,pass){
+    location.href ="../proyectos/proyectos.html";
     // var xmlhttp = new XMLHttpRequest();
     // xmlhttp.onreadystatechange = function() {
     //     if (this.readyState == 4 && this.status == 200) {
