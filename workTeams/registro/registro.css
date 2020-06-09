@@ -8,6 +8,10 @@
 	color: white;
 }
 
+.morado{
+	background-color: #7952b3;
+}
+
 @media only screen and (max-width: 600px) {
     #imagenlogin{
 		display: none;
@@ -41,7 +45,7 @@ button{
 }
 
 #register-form{
-	padding-top: 15vh;
+	padding-top: 7vh;
 }
 
 .visible{
