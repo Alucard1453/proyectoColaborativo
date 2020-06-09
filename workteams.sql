@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.9.2
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-06-2020 a las 01:03:24
--- Versión del servidor: 10.1.29-MariaDB
--- Versión de PHP: 7.2.0
+-- Tiempo de generación: 09-06-2020 a las 21:39:19
+-- Versión del servidor: 10.4.11-MariaDB
+-- Versión de PHP: 7.4.1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -105,11 +105,20 @@ CREATE TABLE `proyecto` (
   `idProyecto` int(11) NOT NULL,
   `propietario` int(11) NOT NULL,
   `nombre` varchar(30) COLLATE utf8_spanish_ci NOT NULL,
+  `descripcion` varchar(512) COLLATE utf8_spanish_ci NOT NULL,
   `fechaInicio` varchar(12) COLLATE utf8_spanish_ci NOT NULL,
   `fechaFin` varchar(12) COLLATE utf8_spanish_ci NOT NULL,
   `numRelease` int(11) NOT NULL,
   `estado` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `proyecto`
+--
+
+INSERT INTO `proyecto` (`idProyecto`, `propietario`, `nombre`, `descripcion`, `fechaInicio`, `fechaFin`, `numRelease`, `estado`) VALUES
+(1, 13, 'Proyecto Prueba', 'Proyecto para desarrollar', '09/06/2020', '12/12/2020', 10, 1),
+(2, 13, 'Prueba dos', 'Proyecto para desarrollar con todo', '05/05/2020', '10/09/2020', 15, 1);
 
 -- --------------------------------------------------------
 
@@ -187,6 +196,13 @@ CREATE TABLE `usuario` (
   `usuario` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
   `contrasena` varchar(12) COLLATE utf8_spanish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Volcado de datos para la tabla `usuario`
+--
+
+INSERT INTO `usuario` (`idUsuario`, `nombre`, `aPaterno`, `aMaterno`, `usuario`, `contrasena`) VALUES
+(13, 'Jorge Alberto', 'López', 'Aragón', 'jlopeza', '123456');
 
 --
 -- Índices para tablas volcadas
@@ -305,7 +321,7 @@ ALTER TABLE `estado`
 -- AUTO_INCREMENT de la tabla `proyecto`
 --
 ALTER TABLE `proyecto`
-  MODIFY `idProyecto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idProyecto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `release`
@@ -329,7 +345,7 @@ ALTER TABLE `tarea`
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `idUsuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Restricciones para tablas volcadas

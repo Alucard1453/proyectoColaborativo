@@ -66,5 +66,39 @@ if(isset($_POST['login'])){
     }
 }
 
+//Se recuperan los proyectos del usuario
+if(isset($_POST['obtenProyectosUser'])){
+    try {
+        $Obtener = array();
+        $band = false;
+        $sql = $mdb->prepare("SELECT * FROM proyecto WHERE propietario = '".$_SESSION['idUsuario']."' ");
+        $sql->execute();
+        while($resultado = $sql->fetch(PDO::FETCH_OBJ)){
+            $band = true;
+            $Obtener[] = array(
+                'idProyecto' => $resultado->idProyecto,
+                'propietario' => $resultado->propietario,
+                'nombre' => $resultado->nombre,
+                'descripcion' => $resultado->descripcion,
+                'fechaInicio' => $resultado->fechaInicio,
+                'fechaFin' => $resultado->fechaFin,
+                'numRelease' => $resultado->numRelease,
+                'estado' => $resultado->estado
+            );
+        }
+        $mdb = null;
+
+        if($band){
+            $myJSON = json_encode($Obtener);
+            echo $myJSON;
+        }else{
+            echo "[]";
+        }
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
+
 
 ?>
