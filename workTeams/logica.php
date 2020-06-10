@@ -150,6 +150,38 @@ if(isset($_POST['idProyectoCH'])){
         echo $sql . "<br>" . $e->getMessage();
     }
 }
+          
+//Busqueda de usuario por username util para autocompletado
+if(isset($_POST['searchUsuario'])){
+    try {
+        if(isset($_POST['actual'])){
+            $sql = $mdb->prepare("SELECT idUsuario, usuario FROM usuario WHERE idUsuario = '".$_SESSION['idUsuario']."' ");
+        }else{
+            $search=$_POST['busca'];
+            $sql = $mdb->prepare("SELECT idUsuario, usuario FROM usuario WHERE usuario LIKE '$search%' ");
+        }
+        $sql->execute();
+        $band = false;
+        while($resultado = $sql->fetch(PDO::FETCH_OBJ)){
+            $band = true;
+            $Obtener[] = array(
+                'idUsuario' => $resultado->idUsuario,
+                'userName' => $resultado->usuario
+            );
+        }
+        $mdb = null;
+
+        if($band){
+            $myJSON = json_encode($Obtener);
+            echo $myJSON;
+        }else{
+            echo "[]";
+        }
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
 
 //Información para los avisos idProyectoCA
 if(isset($_POST['idProyectoCA'])){
@@ -179,4 +211,49 @@ if(isset($_POST['idProyectoCA'])){
         echo $sql . "<br>" . $e->getMessage();
     }
 }
-?>
+          
+//Guardado de proyecto junto con integrantes
+if(isset($_POST['guardarProyecto'])){
+    try {
+        $sql = $mdb->prepare("SELECT nombre FROM proyecto WHERE propietario = '".$_SESSION['idUsuario']."'
+        AND nombre =  '".$_POST['nombre']."' ");
+        $sql->execute();
+
+        $resultado = $sql->fetch(PDO::FETCH_OBJ);
+        if($resultado){
+            $mdb = null;
+            echo 0;
+        }else{
+            $sql = "INSERT INTO proyecto (propietario, nombre, descripcion, fechaInicio, fechaFin, numRelease, estado)
+            VALUES ( '".$_SESSION['idUsuario']."' , '".$_POST['nombre']."', '".$_POST['descripcion']."',
+             '".$_POST['fechaInicio']."', '".$_POST['fechaFin']."', '".$_POST['numRelease']."', 1 )";
+            $mdb->exec($sql);
+
+            $sql = $mdb->prepare("SELECT idProyecto FROM proyecto WHERE propietario = '".$_SESSION['idUsuario']."'
+            AND nombre =  '".$_POST['nombre']."' ");
+            $sql->execute();
+            $resultado = $sql->fetch(PDO::FETCH_OBJ);
+            $idProyecto=$resultado->idProyecto;
+
+            $myJson = json_decode($_POST['json'],true);
+            foreach ($myJson as $value) {
+                $sql = "INSERT INTO participantes (idProyecto, idUsuario, rol)
+                VALUES ( '".$idProyecto."' , '".$value['id']."', '".$value['rol']."')";
+                $mdb->exec($sql);
+            }
+            $mdb = null;
+            echo 1;
+        }
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
+
+//Cerrar la sesion actual
+if(isset($_POST['cerrarSesion'])){
+    // Destruir todas las variables de sesión.
+    $_SESSION = array();
+    // Finalmente, destruir la sesión.
+    session_destroy();
+}
