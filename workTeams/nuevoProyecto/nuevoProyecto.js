@@ -278,3 +278,17 @@ function guardarProyecto(){
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xmlhttp.send("guardarProyecto=1&nombre="+nombre+"&numRelease="+numRelease+"&fechaInicio="+fechaInicio+"&fechaFin="+fechaFin+"&descripcion="+descripcion+"&json="+json);
 }
+
+//Cierra la sesion actual
+function cerrarSesion(){
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            localStorage.clear();
+            validarsesion();
+        }
+    };
+    xmlhttp.open("POST", "../logica.php", true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("cerrarSesion=1");
+}

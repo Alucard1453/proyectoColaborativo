@@ -171,4 +171,12 @@ if(isset($_POST['guardarProyecto'])){
     }
 }
 
+//Cerrar la sesion actual
+if(isset($_POST['cerrarSesion'])){
+    // Destruir todas las variables de sesión.
+    $_SESSION = array();
+    // Finalmente, destruir la sesión.
+    session_destroy();
+}
+
 ?>
