@@ -34,7 +34,7 @@ function validarRelease(){
             let final = new Date(arregloFecha[0]+"/"+arregloFecha[1]+"/"+arregloFecha[2]);
             console.log(final);
             //Obtenemos la fecha actual
-            let horaA = new Date('2020/06/11'); //IMPORTANTE
+            let horaA = new Date('2020/06/19'); //IMPORTANTE
             console.log(horaA);
             //Preguntamos
             if(horaA > final){
@@ -53,11 +53,13 @@ function validarRelease(){
                 });
                 //Fin cambio status
                 cargarHistorias(false);
+                $("#historiasI").removeAttr("disabled");
             }else{
                 console.log("Entre false");
                 cargarHistorias(true);
             }
         }else{
+            $("#historiasI").removeAttr("disabled");
             cargarHistorias(false);
             agregarE();
         }
@@ -425,6 +427,7 @@ function agregarRelease(){
                 console.log(respuesta);
                 validarRelease();
             });
+            document.getElementById("historiasI").disabled = true;
             //Fin Petición Ajax
             alertify.success('Se realizo correctamente la asignación del release');
         }else{
