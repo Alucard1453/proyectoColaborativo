@@ -148,4 +148,62 @@ if(isset($_POST['idProyectoOP'])){
         echo $sql . "<br>" . $e->getMessage();
     }
 }
+ 
+if(isset($_POST['idProyectoAR'])){
+    try {
+        $sql = "INSERT INTO `release` (idProyecto, fechaInicio, fechaFin, estado, numHistorias, totalH)
+        VALUES ( '".$_POST['idProyectoAR']."' , '".$_POST['fechaI']."', '".$_POST['fechaF']."', '3' ,'".$_POST['NumH']."', '0')";
+        $mdb->exec($sql);
+        $mdb = null;
+        echo 1;
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
+
+//Recuperar info del release
+if(isset($_POST['idProyectoVR'])){
+    try {
+        $Release = array();
+        $band = false;
+        $sql = $mdb->prepare("SELECT idRelease, fechaInicio, fechaFin, numHistorias, totalH FROM `release` WHERE idProyecto = '".$_POST['idProyectoVR']."' AND estado='3' ");
+        $sql->execute();
+        while($resultado = $sql->fetch(PDO::FETCH_OBJ)){
+            $band = true;
+            $Release[] = array(
+                'idRelease' => $resultado->idRelease,
+                'fIni' => $resultado->fechaInicio,
+                'fFin' => $resultado->fechaFin,
+                'numH' => $resultado->numHistorias,
+                'totalH' => $resultado->totalH
+            );
+        }
+        $mdb = null;
+
+        if($band){
+            $myJSON = json_encode($Release);
+            echo $myJSON;
+        }else{
+            echo "[]";
+        }
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
+
+//Cambiar status de asignada a en curso
+if(isset($_POST['idRelease'])){
+    try {
+        //Se actualiza el estatus de la historia
+        $sql = "UPDATE `release` SET estado='4' WHERE idRelease='".$_POST['idRelease']."'";
+        $mdb->exec($sql);
+        $mdb = null;
+        echo 1;
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
 ?>

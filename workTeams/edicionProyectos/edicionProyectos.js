@@ -1,6 +1,7 @@
 // var aUsers;
 $(document).ready(function (){
     validarsesion();
+    validarRelease();
     //cargarHistorias();
     $("#hisotirasI").click(function() {
         agregarRelease();
@@ -12,6 +13,52 @@ $(document).ready(function (){
         $("#wrapper").toggleClass("toggled");
     });
 });
+
+function validarRelease(){
+    localStorage.setItem("bandera", true);
+    let idProyectoVR = localStorage.getItem("proyectoSeleccionado");
+    $.ajax({
+        async: false,
+        method: "post",
+        url: "edicionProyectos.php",
+        data: {"idProyectoVR": idProyectoVR}
+    }).done(function(respuesta){
+        var objRelease = JSON.parse(respuesta);
+        console.log(objRelease);
+        if(objRelease.length){
+            //Cambiamos el formato
+            let arregloFecha = objRelease[0]['fFin'].split("-");
+            //Convertimos el string fecha a formato date
+            let final = new Date(arregloFecha[0]+"/"+arregloFecha[1]+"/"+arregloFecha[2]);
+            console.log(final);
+            //Obtenemos la fecha actual
+            let horaA = new Date('2020/06/11');
+            console.log(horaA);
+            //Preguntamos
+            if(horaA > final){
+                console.log("Entre if");
+                //La fecha actual es mayor al fin del release
+                //Cambiar la bandera para no mostrar las historias 
+                localStorage.setItem("bandera", false);
+                //Cambiar el status del del release
+                $.ajax({
+                    async: false,
+                    method: "post",
+                    url: "edicionProyectos.php",
+                    data: {"idRelease": objRelease[0]['idRelease']}
+                }).done(function(respuesta){
+                    console.log(respuesta);
+                });
+                //Fin cambio status
+                cargarHistorias(false);
+            }else{
+                console.log("Entre false");
+                cargarHistorias(true);
+            }
+        }
+    });
+
+}
 
 function obtenerR(idTarea){
     var responsable = 0;
@@ -37,7 +84,7 @@ function validarsesion(){
 }
 
 //Cargar las historias pertenecientes al proyecto
-function cargarHistorias(){
+function cargarHistorias(band){
     eliminarHistorias();
     let idProyectoCH = localStorage.getItem("proyectoSeleccionado");
     $.ajax({
@@ -50,26 +97,30 @@ function cargarHistorias(){
         let array = JSON.parse(respuesta);
         console.log(JSON.parse(respuesta));
         let contenedor; 
+        // var band = localStorage.getItem("bandera");
+        // console.log(band);
         // let asignado;
         for(i=0;i<array.length;i++){
             if(array[i]['estatus'] == 1){
-                contenedor = "espacioDetalles";
-                let nombreT = array[i]['nombreT'];
-                $("#"+contenedor).append(`
-                    <div class="card border-primary mb-3" style="width: 95%; margin-left:10px;">
-                        <div class="card-header bg-primary text-white">${array[i].nombreT} (Sin Asignar)</div>
-                        <div class="card-body text-secondary">
-                        <h5 class="card-title">N° Historia: ${array[i].numT} | Puntos: ${array[i].puntos}</h5>
-                        <p class="card-text">${array[i].descripcion}</p>
-                        </div>
-                        <div class="row">
-                            <div class="form-group col-md-9"></div>
-                            <div class="form-group col-md-3">
-                                <button type="button" onclick="agregarHU(${array[i].idTarea}, '${nombreT}');" class="btn btn-success"><i class="fas fa-plus"></i>
+                if(band){
+                    contenedor = "espacioDetalles";
+                    let nombreT = array[i]['nombreT'];
+                    $("#"+contenedor).append(`
+                        <div class="card border-primary mb-3" style="width: 95%; margin-left:10px;">
+                            <div class="card-header bg-primary text-white">${array[i].nombreT} (Sin Asignar)</div>
+                            <div class="card-body text-secondary">
+                            <h5 class="card-title">N° Historia: ${array[i].numT} | Puntos: ${array[i].puntos}</h5>
+                            <p class="card-text">${array[i].descripcion}</p>
+                            </div>
+                            <div class="row">
+                                <div class="form-group col-md-9"></div>
+                                <div class="form-group col-md-3">
+                                    <button type="button" onclick="agregarHU(${array[i].idTarea}, '${nombreT}');" class="btn btn-success"><i class="fas fa-plus"></i>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `);
+                    `);
+                }
             }else if(array[i]['estatus'] == 2){
                 contenedor = "cont1";
                 let nombreT = array[i]['nombreT'];
@@ -171,7 +222,7 @@ function agregarHU(idTarea, nombreT){
             }).done(function(respuesta){
                 console.log(respuesta);
             });
-            cargarHistorias();
+            cargarHistorias(true);
             alertify.success('Se realizo correctamente la asignación');
         }else{
             alertify.error('No se realizo la asignación');
@@ -255,9 +306,9 @@ function actHUU(idTarea, nomT, asignado, val){
                         data: {"idTareaA": idTarea}
                     }).done(function(respuesta){
                         console.log(respuesta);
-                        alertify.success('Se realizo correctamente la asignación');
+                        alertify.success('Se realizo correctamente la asignación 1');
+                        cargarHistorias(true);
                     });
-                    cargarHistorias();
                 },function(){
                     alertify.error('No se realizo la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar2(nomT));
@@ -273,8 +324,8 @@ function actHUU(idTarea, nomT, asignado, val){
                         }).done(function(respuesta){
                             console.log(respuesta);
                             alertify.success('Se realizo correctamente la asignación');
+                            cargarHistorias(true);
                         });
-                        cargarHistorias();
                 },function(){
                     alertify.error('No se realizo la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar3(nomT));
@@ -317,7 +368,7 @@ function ejecutar3(nombreT){
 function agregarRelease(){
     let cont = document.createElement("div");
     cont.setAttribute("id", "tres");
-
+    let idProyectoAR = localStorage.getItem("proyectoSeleccionado");
     //Inicio de la Alerta
     alertify.confirm("Crear Release", cont, function(){
         let fechaI = $("#fechaInicio").val();
@@ -325,12 +376,23 @@ function agregarRelease(){
         let numH = $("#numH").val()
         if(numH){
             console.log(fechaI, fechaF, numH);
-            alertify.success('Se realizo correctamente la asignación');
+            //Petición Ajax
+            $.ajax({
+                async: false,
+                method: "post",
+                url: "edicionProyectos.php",
+                data: {"idProyectoAR": idProyectoAR, "fechaI": fechaI, "fechaF": fechaF, "NumH": numH}
+            }).done(function(respuesta){
+                console.log(respuesta);
+                validarRelease();
+            });
+            //Fin Petición Ajax
+            alertify.success('Se realizo correctamente la asignación del release');
         }else{
             alertify.error('No se agregó el valor del número de historias');
         }
     },function(){
-        alertify.error('No se realizo la asignación');
+        alertify.error('No se realizo la asignación del release');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, abrirR());
 }
 
@@ -375,6 +437,8 @@ function abrirR(){
 
     $("#fechaInicio").val(inicio);
     $("#fechaFin").val(fin);
+
+    //Realizar peticion para conocer la fecha fin del ultimo release
     $("#fechaInicio").attr("min",inicio);
     $("#fechaFin").attr("min",inicio);
 }
