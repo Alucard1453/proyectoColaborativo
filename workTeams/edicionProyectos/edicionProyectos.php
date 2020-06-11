@@ -56,6 +56,14 @@ if(isset($_POST['idTarea'])){
             $sql3 = "UPDATE tarea SET asignado='".$resultado->idUsuario."' WHERE idTarea='".$_POST['idTarea']."'";
             $mdb->exec($sql3);
         }
+        //Agregar Tarea al release
+        $sql5 = $mdb->prepare("SELECT idRelease FROM `release` WHERE idProyecto = '".$_POST['idProyectoR']."' AND estado='3'");
+        $sql5->execute();
+        $resultado2 = $sql5->fetch(PDO::FETCH_OBJ);
+        $sql4 = "INSERT INTO tareasrelease (idRelease, idTarea)
+        VALUES ('".$resultado2->idRelease."' , '".$_POST['idTarea']."')";
+        $mdb->exec($sql4);
+
         $mdb = null;
         echo 1;
     }
@@ -151,6 +159,9 @@ if(isset($_POST['idProyectoOP'])){
  
 if(isset($_POST['idProyectoAR'])){
     try {
+        //Se actualiza el estatus de la historia
+        // $sql2 = "UPDATE `release` SET estado='4' WHERE idTarea='".$_POST['idTareaA2']."'";
+        // $mdb->exec($sql2);
         $sql = "INSERT INTO `release` (idProyecto, fechaInicio, fechaFin, estado, numHistorias, totalH)
         VALUES ( '".$_POST['idProyectoAR']."' , '".$_POST['fechaI']."', '".$_POST['fechaF']."', '3' ,'".$_POST['NumH']."', '0')";
         $mdb->exec($sql);
@@ -205,5 +216,46 @@ if(isset($_POST['idRelease'])){
     catch(PDOException $e){
         echo $sql . "<br>" . $e->getMessage();
     }
+}
+
+//Definir encabezado
+if(isset($_POST['idProyectoE'])){
+    try {
+        //Se obtiene el num de historias
+        $sql2 = $mdb->prepare("SELECT COUNT(idProyecto) AS numR FROM `release` WHERE idProyecto='".$_POST['idProyectoE']."' ");
+        $sql2->execute();
+        $resultado = $sql2->fetch(PDO::FETCH_OBJ);
+        //Se obtine el total de release
+        $sql = $mdb->prepare("SELECT numRelease FROM proyecto WHERE idProyecto='".$_POST['idProyectoE']."' ");
+        $sql->execute();
+        $resultado2 = $sql->fetch(PDO::FETCH_OBJ);
+        //Creamos Objeto
+        $Release = array();
+        $Release[] = array(
+            'numActual' => $resultado->numR,
+            'numFinal' => $resultado2->numRelease
+        );
+        $mdb = null;
+
+        $myJSON = json_encode($Release);
+        echo $myJSON;
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
+
+//Retornar fechaFinal
+if(isset($_POST['idProyectoF'])){
+        //Se retorna la fecha final
+        $sql2 = $mdb->prepare("SELECT fechaFin FROM `release` WHERE idProyecto='".$_POST['idProyectoF']."' AND estado='4' ORDER BY idRelease DESC LIMIT 1");
+        $sql2->execute();
+        $resultado = $sql2->fetch(PDO::FETCH_OBJ);
+        $mdb = null;
+        if(empty($resultado->fechaFin)){
+            echo "";
+        }else{
+            echo $resultado->fechaFin;
+        }
 }
 ?>

@@ -3,7 +3,7 @@ $(document).ready(function (){
     validarsesion();
     validarRelease();
     //cargarHistorias();
-    $("#hisotirasI").click(function() {
+    $("#historiasI").click(function() {
         agregarRelease();
     });
 
@@ -15,7 +15,7 @@ $(document).ready(function (){
 });
 
 function validarRelease(){
-    localStorage.setItem("bandera", true);
+    // localStorage.setItem("bandera", true);
     let idProyectoVR = localStorage.getItem("proyectoSeleccionado");
     $.ajax({
         async: false,
@@ -26,13 +26,15 @@ function validarRelease(){
         var objRelease = JSON.parse(respuesta);
         console.log(objRelease);
         if(objRelease.length){
+            //Establecemos encabezado
+            agregarEncabezado(objRelease[0]['fIni'], objRelease[0]['fFin'], objRelease[0]['idRelease'], objRelease[0]['numH']);
             //Cambiamos el formato
             let arregloFecha = objRelease[0]['fFin'].split("-");
             //Convertimos el string fecha a formato date
             let final = new Date(arregloFecha[0]+"/"+arregloFecha[1]+"/"+arregloFecha[2]);
             console.log(final);
             //Obtenemos la fecha actual
-            let horaA = new Date('2020/06/11');
+            let horaA = new Date('2020/06/11'); //IMPORTANTE
             console.log(horaA);
             //Preguntamos
             if(horaA > final){
@@ -55,9 +57,45 @@ function validarRelease(){
                 console.log("Entre false");
                 cargarHistorias(true);
             }
+        }else{
+            cargarHistorias(false);
+            agregarE();
         }
     });
 
+}
+
+function agregarE(){
+    eliminarE();
+    $("#titulo2").append(`
+        (No hay un release actual, cree uno nuevo).
+    `);
+}
+
+function agregarEncabezado(fInicio, fFinal, idRelease, numH){
+    console.log(fInicio, fFinal, idRelease, numH);
+    let idProyectoE = localStorage.getItem("proyectoSeleccionado");
+    $.ajax({
+        async: false,
+        method: "post",
+        url: "edicionProyectos.php",
+        data: {"idProyectoE": idProyectoE}
+    }).done(function(respuesta){
+        let datos = JSON.parse(respuesta);
+        let actual = datos[0]['numActual'];
+        let total = datos[0]['numFinal'];
+        eliminarE();
+        $("#titulo2").append(`
+            | Inicio: ${fInicio} | Final: ${fFinal} | Release: (${actual}/${total}) |
+        `);
+    });
+}
+
+function eliminarE(){
+    let element1 = document.getElementById("titulo2");
+    while (element1.firstChild) {
+        element1.removeChild(element1.firstChild);
+    }
 }
 
 function obtenerR(idTarea){
@@ -209,16 +247,17 @@ function agregarHU(idTarea, nombreT){
     console.log(idTarea);
     let cont = document.createElement("div");
     cont.setAttribute("id", "uno");
-
+    let idProyectoR = localStorage.getItem("proyectoSeleccionado");
     //Inicio de la Alerta
     alertify.confirm("Asignación de la Tarea", cont, function(){
         let value = document.getElementById("search").value;
         if(value){
+            //Actualizar estado
             $.ajax({
                 async: false,
                 method: "post",
                 url: "edicionProyectos.php",
-                data: {"idTarea": idTarea, "usuario": value}
+                data: {"idTarea": idTarea, "usuario": value, "idProyectoR": idProyectoR}
             }).done(function(respuesta){
                 console.log(respuesta);
             });
@@ -423,10 +462,10 @@ function abrirR(){
                 <div class="form-group col-md-6">
                 <label for="inputEstatus">Estatus</label>
                 <input type="text" class="form-control" id="status" value="En Curso" readonly>
-               </div>
             </div>
-          </div>
-          <br>
+            </div>
+        </div>
+        <br>
         </div>
         <div class="col-md-1"></div>
     </div>
@@ -434,11 +473,32 @@ function abrirR(){
 
     inicio=moment().format("YYYY-MM-DD");
     fin=moment().add('days',7).format("YYYY-MM-DD");
+    // $("#fechaInicio").val(inicio);
+    // $("#fechaFin").val(fin);
 
-    $("#fechaInicio").val(inicio);
-    $("#fechaFin").val(fin);
+    let idProyectoF = localStorage.getItem("proyectoSeleccionado");
+    $.ajax({
+        async: false,
+        method: "post",
+        url: "edicionProyectos.php",
+        data: {"idProyectoF": idProyectoF}
+    }).done(function(respuesta){
+        console.log(respuesta);
+        if(respuesta){
+            //Tratamos la fecha
+            // let arregloFecha = respuesta.split("-");
+            // let final = (arregloFecha[0]+"/"+arregloFecha[1]+"/"+arregloFecha[2]);
+            // console.log(final);
+            //Realizar peticion para conocer la fecha fin del ultimo release
+            $("#fechaInicio").attr("min",respuesta);
+            $("#fechaFin").attr("min",respuesta);
+        }else{
+            //Realizar peticion para conocer la fecha fin del ultimo release
+            console.log("Entre false fecha");
+            $("#fechaInicio").attr("min",inicio);
+            $("#fechaFin").attr("min",inicio);
+        }
 
-    //Realizar peticion para conocer la fecha fin del ultimo release
-    $("#fechaInicio").attr("min",inicio);
-    $("#fechaFin").attr("min",inicio);
+    });
+
 }
