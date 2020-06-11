@@ -1,0 +1,118 @@
+.btn-nav{
+    border: 1px solid #007bff;
+    color: white !important;
+}
+
+.btn-nav:hover{
+    border: 1px solid white;
+    color: white !important;
+}
+
+.herramientas{
+    background-color: #eaeded;
+}
+
+.btn-menu{
+    padding: 5px;
+}
+
+.btn-selected{
+    background-color: #f8f9fa;
+}
+
+
+#detalles{
+    border: 2px solid #dddddd;
+    border-radius: 12px;
+    padding: 15px 15px 15px 15px;
+    min-height: 73vh;
+}
+
+.visible{
+    display: block;
+}
+
+.invisible{
+    display: none;
+}
+
+.tarjeta{
+    padding-left: 20px;
+    padding-top: 10px;
+}
+
+@media only screen and (max-width: 1366px) {
+    #logo{
+        padding-left: 69px;
+    }
+
+    #navbarTogglerMain{
+        padding-left: 65%;
+    }
+
+    .ancho{
+        width: 75vw;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #logo{
+        padding-left: 0px;
+        width: 185px;
+    }
+    #navbarTogglerMain{
+        padding-left: 40%;
+    }
+
+    .ancho{
+        width: 100vw;
+    }
+}
+
+/* Codigo SideNav */
+body {
+    padding-top: 65px;
+    overflow-x: hidden;
+}
+  
+#sidebar-wrapper {
+    min-height: 89vh;
+    margin-left: -15rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#page-content-wrapper {
+    /* min-width: 150vw; */
+    width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
