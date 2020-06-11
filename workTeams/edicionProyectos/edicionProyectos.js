@@ -1,7 +1,10 @@
 // var aUsers;
 $(document).ready(function (){
     validarsesion();
-    cargarHistorias();
+    //cargarHistorias();
+    $("#hisotirasI").click(function() {
+        agregarRelease();
+    });
 
     //Funcion para inicializar boton de menu izquierdo
     $("#menu-toggle").click(function(e) {
@@ -309,4 +312,69 @@ function ejecutar3(nombreT){
         <div class="col-md-1"></div>
     </div>
     `);
+}
+
+function agregarRelease(){
+    let cont = document.createElement("div");
+    cont.setAttribute("id", "tres");
+
+    //Inicio de la Alerta
+    alertify.confirm("Crear Release", cont, function(){
+        let fechaI = $("#fechaInicio").val();
+        let fechaF = $("#fechaFin").val();
+        let numH = $("#numH").val()
+        if(numH){
+            console.log(fechaI, fechaF, numH);
+            alertify.success('Se realizo correctamente la asignación');
+        }else{
+            alertify.error('No se agregó el valor del número de historias');
+        }
+    },function(){
+        alertify.error('No se realizo la asignación');
+    }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, abrirR());
+}
+
+function abrirR(){
+    $("#tres").append(`
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <br>
+            <p style="text-align: justify;">Para iniciar un nuevo release defina la información correspondiente.</p>
+            <br>
+            <div id="contenido">                                
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="fechaInicio">Fecha de inicio</label>
+                    <input type="date" class="form-control" id="fechaInicio">
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="fechaFin">Fecha de fin</label>
+                    <input type="date" class="form-control" id="fechaFin">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Número de Historias</label>
+                    <input type="number" min="1" class="form-control" id="numH" placeholder="# Historias">
+                </div>
+                <div class="form-group col-md-6">
+                <label for="inputEstatus">Estatus</label>
+                <input type="text" class="form-control" id="status" value="En Curso" readonly>
+               </div>
+            </div>
+          </div>
+          <br>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    `);
+
+    inicio=moment().format("YYYY-MM-DD");
+    fin=moment().add('days',7).format("YYYY-MM-DD");
+
+    $("#fechaInicio").val(inicio);
+    $("#fechaFin").val(fin);
+    $("#fechaInicio").attr("min",inicio);
+    $("#fechaFin").attr("min",inicio);
 }

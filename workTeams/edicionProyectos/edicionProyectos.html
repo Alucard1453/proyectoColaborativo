@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
     <!-- Bootstrap theme -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <script src="../moment.js"></script>
     <style>
         ::-webkit-scrollbar {
             display: none;
@@ -135,7 +136,15 @@
                             <!-- Fin contenido -->
                         </div>
                         <div id="detalles" class="col-sm-4">
-                            <p class="col-sm-12 h5">Historias de Usuario</p>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-8">
+                                    <p class="h5">Historias de Usuario</p>
+                                </div>
+                                <div class="col-md-1">
+                                    <button type="button" id="hisotirasI" class="btn btn-success"><i class="far fa-calendar-plus"></i></button>
+                                </div>
+                            </div>
                             <div class="dropdown-divider"></div>
                             <div id="espacioDetalles" class="visible">
                             </div>
