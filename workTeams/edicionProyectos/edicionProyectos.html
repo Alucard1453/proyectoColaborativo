@@ -19,6 +19,23 @@
     <!--Importacion de fuentes locales-->
     <link rel="stylesheet" href="edicionProyectos.css" type="text/css" media="all"/>
     <script type="text/javascript" src="edicionProyectos.js"></script>
+    <!-- Links de Alert -->
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css"/>
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css"/>
+    <style>
+        ::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
 </head>
 <body class="col-12">
   <!-- Nav -->
@@ -69,19 +86,58 @@
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-12">
-                            <h1 class="mt-4">Mis proyectos</h1>
+                            <h1 class="mt-4">Administrar Release</h1>
                         </div>
                     </div>
                     <div class="dropdown-divider ancho"></div>
                     <div class="row">
                         <div class="col-sm-8">
-                            <!-- contenido -->
+                            <!-- Inicio contenido -->
+                            <div id="accordion">
+                                <div class="card">
+                                  <div class="card-header bg-primary" id="headingOne">
+                                    <h5 class="mb-0">
+                                      <button style="color: white;" class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                        <h5>Historias Asignadas</h5>
+                                      </button>
+                                    </h5>
+                                  </div>
+                              
+                                  <div id="collapseOne" class="collapse show" a-labelledby="headingOne">
+                                    <div id="cont1" class="card-body"></div>
+                                  </div>
+                                </div>
+                                <div class="card">
+                                  <div class="card-header bg-primary" id="headingTwo">
+                                    <h5 class="mb-0">
+                                      <button style="color: white;" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                                        <h5>Historias En Curso</h5>
+                                      </button>
+                                    </h5>
+                                  </div>
+                                  <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo">
+                                    <div id="cont2" class="card-body"></div>
+                                  </div>
+                                </div>
+                                <div class="card">
+                                  <div class="card-header bg-primary" id="headingThree">
+                                    <h5 class="mb-0">
+                                      <button style="color: white;" class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+                                        <h5>Historias Finalizadas</h5>
+                                      </button>
+                                    </h5>
+                                  </div>
+                                  <div id="collapseThree" class="collapse show" aria-labelledby="headingThree">
+                                    <div id="cont3" class="card-body"></div>
+                                  </div>
+                                </div>
+                            </div>
+                            <!-- Fin contenido -->
                         </div>
                         <div id="detalles" class="col-sm-4">
-                            <p class="col-sm-12 h5">Espacio Para Avisos</p>
+                            <p class="col-sm-12 h5">Historias de Usuario</p>
                             <div class="dropdown-divider"></div>
                             <div id="espacioDetalles" class="visible">
-
                             </div>
                         </div>
                     </div>
