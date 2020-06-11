@@ -1,8 +1,6 @@
-var aUsers;
-
+// var aUsers;
 $(document).ready(function (){
     validarsesion();
-    obtenerParticipantes();
     cargarHistorias();
 
     //Funcion para inicializar boton de menu izquierdo
@@ -12,17 +10,20 @@ $(document).ready(function (){
     });
 });
 
-function obtenerParticipantes(){
+function obtenerR(idTarea){
+    var responsable = 0;
     let idProyectoOP = localStorage.getItem("proyectoSeleccionado");
     $.ajax({
-        async: "false",
+        async: false,
         method: "post",
         url: "edicionProyectos.php",
-        data: {"idProyectoOP": idProyectoOP}
+        data: {"idProyectoOP": idProyectoOP, 'idTareaOP': idTarea}
     }).done(function(respuesta){
-        console.log(JSON.parse(respuesta));
-        aUsers = JSON.parse(respuesta);
+        console.log(respuesta);
+        responsable = respuesta;
     });
+    console.log(responsable);
+    return responsable;
 }
 
 //Valida si hay una sesion iniciada
@@ -37,6 +38,7 @@ function cargarHistorias(){
     eliminarHistorias();
     let idProyectoCH = localStorage.getItem("proyectoSeleccionado");
     $.ajax({
+        async: false,
         method: "post",
         url: "edicionProyectos.php",
         data: {"idProyectoCH": idProyectoCH}
@@ -45,14 +47,8 @@ function cargarHistorias(){
         let array = JSON.parse(respuesta);
         console.log(JSON.parse(respuesta));
         let contenedor; 
-        let asignado;
+        // let asignado;
         for(i=0;i<array.length;i++){
-            for(let j=0; j<aUsers.length; j++){
-                if(array[i]['idTarea'] == aUsers[j]['idTarea']){
-                    console.log("El asignado de la tarea es: "+aUsers[j]['asignado']);
-                    asignado = aUsers[j]['asignado'];
-                }
-            }
             if(array[i]['estatus'] == 1){
                 contenedor = "espacioDetalles";
                 let nombreT = array[i]['nombreT'];
@@ -78,7 +74,7 @@ function cargarHistorias(){
                 console.log(array[i]['asignado']);
                 $("#"+contenedor).append(`
                     <div class="card border-secondary mb-3" style="width: 95%; margin-left:10px;">
-                        <div class="card-header bg-secondary text-white">${array[i].nombreT} asignada a ${asignado}</div>
+                        <div class="card-header bg-secondary text-white">${array[i].nombreT} asignado a ${obtenerR(array[i].idTarea)}</div>
                         <div class="card-body text-secondary">
                         <h5 class="card-title">N° Historia: ${array[i].numT} | Puntos: ${array[i].puntos}</h5>
                         <p class="card-text">${array[i].descripcion}</p>
@@ -97,7 +93,7 @@ function cargarHistorias(){
                 let val = 2;
                 $("#"+contenedor).append(`
                     <div class="card border-secondary mb-3" style="width: 95%; margin-left:10px;">
-                        <div class="card-header bg-secondary text-white">${array[i].nombreT} asignada a ${asignado}</div>
+                        <div class="card-header bg-secondary text-white">${array[i].nombreT} asignado a ${obtenerR(array[i].idTarea)}</div>
                         <div class="card-body text-secondary">
                         <h5 class="card-title">N° Historia: ${array[i].numT} | Puntos: ${array[i].puntos}</h5>
                         <p class="card-text">${array[i].descripcion}</p>
@@ -114,7 +110,7 @@ function cargarHistorias(){
                 contenedor = "cont3";
                 $("#"+contenedor).append(`
                 <div class="card border-secondary mb-3" style="width: 95%; margin-left:10px;">
-                    <div class="card-header bg-secondary text-white">${array[i].nombreT} asignada a ${asignado}</div>
+                    <div class="card-header bg-secondary text-white">${array[i].nombreT} asignado a ${obtenerR(array[i].idTarea)}</div>
                     <div class="card-body text-secondary">
                     <h5 class="card-title">N° Historia: ${array[i].numT} | Puntos: ${array[i].puntos}</h5>
                     <p class="card-text">${array[i].descripcion}</p>
@@ -122,7 +118,7 @@ function cargarHistorias(){
                     <div class="row">
                         <div class="form-group col-md-10"></div>
                         <div class="form-group col-md-2">
-                            <button type="button" onclick="" class="btn btn-danger"><i class="fas fa-retweet"></i>
+                            <button type="button" onclick="" class="btn btn-success"><i class="far fa-comment"></i>
                         </div>
                     </div>
                 </div>
@@ -165,14 +161,14 @@ function agregarHU(idTarea, nombreT){
         let value = document.getElementById("search").value;
         if(value){
             $.ajax({
-                async: "false",
+                async: false,
                 method: "post",
                 url: "edicionProyectos.php",
                 data: {"idTarea": idTarea, "usuario": value}
             }).done(function(respuesta){
                 console.log(respuesta);
             });
-            location.reload();
+            cargarHistorias();
             alertify.success('Se realizo correctamente la asignación');
         }else{
             alertify.error('No se realizo la asignación');
@@ -206,6 +202,7 @@ function ejecutar(nombreT){
     let idProyectoBU = localStorage.getItem("proyectoSeleccionado");
 
     $.ajax({
+        async: false,
         method: "post",
         url: "edicionProyectos.php",
         data: {"idProyectoBU": idProyectoBU}
@@ -221,24 +218,28 @@ function ejecutar(nombreT){
 }
 
 function actHUU(idTarea, nomT, asignado, val){
-    var idLider;
+    //var idLider;
     console.log(asignado, val);
     let idProyecto = localStorage.getItem("proyectoSeleccionado");
     $.ajax({
+        async: false,
         method: "post",
         url: "edicionProyectos.php",
         data: {"asignado": asignado, 'idProyecto':idProyecto}
     }).done(function(respuesta){
-        idLider = respuesta;
+        console.log(respuesta);
+        localStorage.setItem("lider", respuesta);
+
     });
 
     $.ajax({
+        async: false,
         method: "post",
         url: "../logica.php",
         data: {"asignado": asignado}
     }).done(function(respuesta){
-        console.log("Lider"+idLider);
-        if(respuesta == asignado || respuesta == idLider){
+        //console.log("Lider"+idLider);
+        if(respuesta == asignado || respuesta == localStorage.getItem("lider")){
             let cont = document.createElement("div");
             cont.setAttribute("id", "dos");
             if(val == '1'){
@@ -253,7 +254,7 @@ function actHUU(idTarea, nomT, asignado, val){
                         console.log(respuesta);
                         alertify.success('Se realizo correctamente la asignación');
                     });
-                    location.reload();
+                    cargarHistorias();
                 },function(){
                     alertify.error('No se realizo la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar2(nomT));
@@ -262,7 +263,7 @@ function actHUU(idTarea, nomT, asignado, val){
                 //Inicio de la Alerta
                 alertify.confirm("Actualizar Estatus", cont, function(){
                         $.ajax({
-                            async: "false",
+                            async: false,
                             method: "post",
                             url: "edicionProyectos.php",
                             data: {"idTareaA2": idTarea}
@@ -270,7 +271,7 @@ function actHUU(idTarea, nomT, asignado, val){
                             console.log(respuesta);
                             alertify.success('Se realizo correctamente la asignación');
                         });
-                        location.reload();
+                        cargarHistorias();
                 },function(){
                     alertify.error('No se realizo la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar3(nomT));
@@ -278,7 +279,7 @@ function actHUU(idTarea, nomT, asignado, val){
             }
 
         }else{
-            console.log(asignado, idLider);
+            console.log(asignado, localStorage.getItem("lider"));
             alertify.error("Solo el usuario asignado puede actualizar la historia");
         }
     });

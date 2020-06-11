@@ -137,25 +137,12 @@ if(isset($_POST['idTareaA2'])){
 //Cargar los participantes del idProyecto
 if(isset($_POST['idProyectoOP'])){
     try {
-        $Usuario = array();
-        $band = false;
-        $sql = $mdb->prepare("SELECT idTarea, u.usuario FROM tarea AS t INNER JOIN usuario AS u ON t.asignado=u.idUsuario WHERE idProyecto = '".$_POST['idProyectoOP']."' ");
-        $sql->execute();
-        while($resultado = $sql->fetch(PDO::FETCH_OBJ)){
-            $band = true;
-            $Usuario[] = array(
-                'idTarea' => $resultado->idTarea,
-                'asignado' => $resultado->usuario
-            );
-        }
+        //Se obtiene el id de usuario
+        $sql2 = $mdb->prepare("SELECT u.usuario FROM usuario as u INNER JOIN tarea as t ON u.idUsuario=t.asignado WHERE t.idProyecto='".$_POST['idProyectoOP']."' AND t.idTarea='".$_POST['idTareaOP']."'");
+        $sql2->execute();
+        $resultado = $sql2->fetch(PDO::FETCH_OBJ);
         $mdb = null;
-
-        if($band){
-            $myJSON = json_encode($Usuario);
-            echo $myJSON;
-        }else{
-            echo "[]";
-        }
+        echo $resultado->usuario;
     }
     catch(PDOException $e){
         echo $sql . "<br>" . $e->getMessage();
