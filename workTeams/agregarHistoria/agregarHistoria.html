@@ -65,15 +65,15 @@
                   </div>
                   <div class="list-group list-group-flush">
                       <a href="../edicionProyectos/edicionProyectos.html" class="list-group-item list-group-item-action herramientas">
-                          <i class="fas fa-project-diagram"></i>&nbsp;&nbsp;&nbsp;&nbsp;Detalle Proyecto
+                          <i class="fas fa-project-diagram"></i>&nbsp;&nbsp;&nbsp;&nbsp;Administrar Release
                       </a>
                       <a href="../agregarHistoria/agregarHistoria.html" class="list-group-item list-group-item-action btn-selected">
                           <i class="fas fa-plus"></i>&nbsp;&nbsp;&nbsp;&nbsp;Agregar Historias
                       </a>
-                      <!-- <a href="#" class="list-group-item list-group-item-action herramientas">
-                          <i class="fas fa-users"></i>&nbsp;&nbsp;&nbsp;&nbsp;opcion Dummy (cambiar icono conforme a la opcion)
+                      <a href="../proyectos/proyectos.html" class="list-group-item list-group-item-action herramientas">
+                        <i class="far fa-folder-open"></i>&nbsp;&nbsp;&nbsp;&nbsp;Mis Proyectos
                       </a>
-                      <a href="#" class="list-group-item list-group-item-action herramientas">
+                      <!--<a href="#" class="list-group-item list-group-item-action herramientas">
                           <i class="fas fa-user"></i>&nbsp;&nbsp;&nbsp;&nbsp;opcion Dummy (cambiar icono conforme a la opcion)
                       </a>  -->
                   </div>
@@ -90,7 +90,7 @@
                       </div>
                       <div class="dropdown-divider ancho"></div>
                       <div class="row">
-                          <div class="col-sm-7">
+                          <div class="col-sm-8">
                               <form id="formulario">
                                   <div class="form-row">
                                     <div class="form-group col-md-6">
@@ -100,7 +100,7 @@
                                     </div>
                                     <div class="form-group col-md-3">
                                       <label for="inputNumT">Número de la Tarea</label>
-                                      <input type="text" class="form-control" id="inputNumT" placeholder="Número Tarea" required>
+                                      <input type="number" min="1" class="form-control" id="inputNumT" placeholder="Número Tarea" required>
                                       <small id="vNumT" class="text-danger invisible"><i class="fas fa-exclamation"></i>Llene el campo</small>
                                      </div>
                                      <div class="form-group col-md-3">
@@ -148,11 +148,11 @@
                               </div>
                           </div>
                           <div id="detalles" class="col-sm-4">
-                              <p class="col-sm-12 h5">Espacio Para Avisos</p>
+                              <p class="col-sm-12 h5">Tablero de Avisos</p>
                               <div class="dropdown-divider"></div>
                               <div id="espacioDetalles" class="visible"></div>
                           </div>
-                          <div class="col-sm-1"></div>
+                          <!-- <div class="col-sm-1"></div> -->
                       </div>
                     <div class="dropdown-divider ancho"></div>
                   </div>

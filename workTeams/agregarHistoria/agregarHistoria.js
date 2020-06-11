@@ -125,6 +125,11 @@ function eliminarHistorias(){
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
+
+    let element2 = document.getElementById("espacioDetalles");
+    while (element2.firstChild) {
+        element2.removeChild(element2.firstChild);
+    }
 }
 
 function cargarAvisos(cantidad, cantP){

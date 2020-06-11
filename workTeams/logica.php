@@ -257,3 +257,8 @@ if(isset($_POST['cerrarSesion'])){
     // Finalmente, destruir la sesión.
     session_destroy();
 }
+
+//Recuperacion del idUsuario Actual
+if(isset($_POST['asignado'])){
+    echo $_SESSION['idUsuario'];
+ }
