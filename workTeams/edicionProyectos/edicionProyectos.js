@@ -34,7 +34,7 @@ function validarRelease(){
             let final = new Date(arregloFecha[0]+"/"+arregloFecha[1]+"/"+arregloFecha[2]);
             console.log(final);
             //Obtenemos la fecha actual
-            let horaA = new Date('2020/06/19'); //IMPORTANTE
+            let horaA = new Date(); //IMPORTANTE Ingrese la fecha en formato 'YYYY-MM-DD' para definir una fecha actual
             console.log(horaA);
             //Preguntamos
             if(horaA > final){
