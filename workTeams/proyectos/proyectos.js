@@ -37,7 +37,7 @@ function recuperaProyectos(){
                                             <div class="card">
                                                 <div class="card-body">
                                                     <h5 class="card-title">${respuesta[i].nombre}</h5>
-                                                    <h6 class="card-subtitle mb-2 text-muted small">${respuesta[i].fechaInicio}-${respuesta[i].fechaFin}</h6>
+                                                    <h6 class="card-subtitle mb-2 text-muted small">Líder: ${respuesta[i].propietario}</h6>
                                                     <p class="card-text">${respuesta[i].descripcion}</p>
                                                     <button type="button" onclick="seleccionarProyecto(${respuesta[i].idProyecto})" class="btn btn-primary">Seleccionar</a>
                                                 </div>
@@ -49,7 +49,7 @@ function recuperaProyectos(){
     };
     xmlhttp.open("POST", "../logica.php", true);
     xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xmlhttp.send("obtenProyectosUser=1");
+    xmlhttp.send("obtenProyectosParticipo=1");
 }
 
 function seleccionarProyecto(num){
