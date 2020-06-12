@@ -2,7 +2,6 @@
 $(document).ready(function (){
     validarsesion();
     validarRelease();
-    //cargarHistorias();
     $("#historiasI").click(function() {
         agregarRelease();
     });
