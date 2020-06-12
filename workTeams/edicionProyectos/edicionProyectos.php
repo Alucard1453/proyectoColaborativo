@@ -258,4 +258,18 @@ if(isset($_POST['idProyectoF'])){
             echo $resultado->fechaFin;
         }
 }
+
+//idTareaC
+if(isset($_POST['idTareaC'])){
+    try {
+        $sql = "INSERT INTO comentariosrelease (idTarea, fechaHora, comentario)
+        VALUES ( '".$_POST['idTareaC']."' , '".$_POST['fecha']."', '".$_POST['comentario']."')";
+        $mdb->exec($sql);
+        $mdb = null;
+        echo 1;
+    }
+    catch(PDOException $e){
+        echo $sql . "<br>" . $e->getMessage();
+    }
+}
 ?>

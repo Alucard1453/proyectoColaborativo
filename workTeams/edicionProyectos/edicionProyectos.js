@@ -2,7 +2,6 @@
 $(document).ready(function (){
     validarsesion();
     validarRelease();
-    //cargarHistorias();
     $("#historiasI").click(function() {
         agregarRelease();
     });
@@ -212,7 +211,7 @@ function cargarHistorias(band){
                     <div class="row">
                         <div class="form-group col-md-10"></div>
                         <div class="form-group col-md-2">
-                            <button type="button" onclick="" class="btn btn-success"><i class="far fa-comment"></i>
+                            <button type="button" onclick="agregarComentario(${array[i].idTarea}, '${array[i].nombreT}');" class="btn btn-success"><i class="far fa-comment"></i>
                         </div>
                     </div>
                 </div>
@@ -333,7 +332,7 @@ function actHUU(idTarea, nomT, asignado, val){
         url: "../logica.php",
         data: {"asignado": asignado}
     }).done(function(respuesta){
-        //console.log("Lider"+idLider);
+        localStorage.setItem("usuarioActual", respuesta);
         if(respuesta == asignado || respuesta == localStorage.getItem("lider")){
             let cont = document.createElement("div");
             cont.setAttribute("id", "dos");
@@ -504,4 +503,53 @@ function abrirR(){
 
     });
 
+}
+
+function agregarComentario(idTarea, nombreT){
+    console.log(idTarea, nombreT);
+    let cont = document.createElement("div");
+    cont.setAttribute("id", "cuatro");
+
+    //Inicio de la Alerta
+    alertify.confirm("Agregar Comentario", cont, function(){
+        let comentario = $("#comentarioT").val();
+        let fecha = moment().format("YYYY-MM-DD");
+        if(comentario){
+            console.log(comentario, fecha);
+            //Petición Ajax
+            $.ajax({
+                async: false,
+                method: "post",
+                url: "edicionProyectos.php",
+                data: {"idTareaC": idTarea, "fecha": fecha, "comentario": comentario}
+            }).done(function(respuesta){
+                console.log(respuesta);
+                alertify.success("Se asignó correctamente el comentario");
+            });
+        }else{
+            alertify.error('No existe un comentario');
+        }
+    },function(){
+        alertify.error('No se realizo la asignación del comentario');
+    }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, setComentario(nombreT));
+}
+
+function setComentario(nombreT){
+    $("#cuatro").append(`
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <br>
+                <p style="text-align: justify;">¿Desea agregar un comentario a la historia ${nombreT}?</p>
+                <br>
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <textarea class="form-control" id="comentarioT" rows="3" placeholder="Ingrese el comentario"></textarea>
+                    </div>
+                </div>
+                <p style="text-align: justify;"><b>Presione Enter o Aceptar para agregar el comentario.</b></p>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    `);
 }
