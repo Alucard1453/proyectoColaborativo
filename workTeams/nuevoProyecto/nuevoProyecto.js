@@ -184,7 +184,7 @@ function cargarUsuarios(){
                 </div>
                 <div class="form-group col-md-7">
                     <select disabled class="custom-select">
-                        <option value="1" selected disabled>Lider de proyecto</option>
+                        <option value="1" selected disabled>Líder de proyecto</option>
                     </select>
                 </div>
                 <div class="form-group col-md-2">
