@@ -89,7 +89,7 @@ function agregarHistoria(){
             }
         });
     },function(){
-        alertify.error('No se agrego la Tarea');
+        alertify.error('No se agregó la Tarea');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});
 }
 
@@ -162,7 +162,7 @@ function cargarAvisos(cantidad, cantP){
                 <div class="card-header bg-success border-success text-white">Información Release</div>
                 <div class="card-body text-secondary">
                 <h5 class="card-title">Definición del Trabajo</h5>
-                <p style="text-align: justify;" class="card-text">Se sugiere que dadas las ${cantidad} historias de usuario, presentes en el proyecto, y con una espectativa de ${numRelease} releases, se debe realizar un release cada ${parseInt(diff/numRelease)} días, y a su vez, en cada release efectuar ${Math.round(cantP/numRelease)+1} puntos de historia.</p>
+                <p style="text-align: justify;" class="card-text">Se sugiere que dadas las ${cantidad} historias de usuario, presentes en el proyecto, y con una expectativa de ${numRelease} releases, se debe realizar un release cada ${parseInt(diff/numRelease)} días, y a su vez, en cada release efectuar ${Math.round(cantP/numRelease)+1} puntos de historia.</p>
                 </div>
             </div>
         `);

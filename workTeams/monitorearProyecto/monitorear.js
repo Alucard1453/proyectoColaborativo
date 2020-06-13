@@ -40,7 +40,7 @@ function agregarHistoria(){
             }
         });
     },function(){
-        alertify.error('No se agrego la Tarea');
+        alertify.error('No se agregó la Tarea');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false});
 }
 

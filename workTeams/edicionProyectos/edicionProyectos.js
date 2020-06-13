@@ -263,12 +263,12 @@ function agregarHU(idTarea, nombreT){
                 console.log(respuesta);
             });
             cargarHistorias(true);
-            alertify.success('Se realizo correctamente la asignación');
+            alertify.success('Se realizó correctamente la asignación');
         }else{
-            alertify.error('No se realizo la asignación');
+            alertify.error('No se realizó la asignación');
         }
     },function(){
-        alertify.error('No se realizo la asignación');
+        alertify.error('No se realizó la asignación');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar(nombreT));
 }
 
@@ -346,11 +346,11 @@ function actHUU(idTarea, nomT, asignado, val){
                         data: {"idTareaA": idTarea}
                     }).done(function(respuesta){
                         console.log(respuesta);
-                        alertify.success('Se realizo correctamente la asignación 1');
+                        alertify.success('Se realizó correctamente la asignación 1');
                         cargarHistorias(true);
                     });
                 },function(){
-                    alertify.error('No se realizo la asignación');
+                    alertify.error('No se realizó la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar2(nomT));
                 //Fin de la alerta
             }else if(val == '2'){
@@ -363,18 +363,18 @@ function actHUU(idTarea, nomT, asignado, val){
                             data: {"idTareaA2": idTarea}
                         }).done(function(respuesta){
                             console.log(respuesta);
-                            alertify.success('Se realizo correctamente la asignación');
+                            alertify.success('Se realizó correctamente la asignación');
                             cargarHistorias(true);
                         });
                 },function(){
-                    alertify.error('No se realizo la asignación');
+                    alertify.error('No se realizó la asignación');
                 }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, ejecutar3(nomT));
                 //Fin de la alerta
             }
 
         }else{
             console.log(asignado, localStorage.getItem("lider"));
-            alertify.error("Solo el usuario asignado puede actualizar la historia");
+            alertify.error("Sólo el usuario asignado puede actualizar la historia");
         }
     });
 }
@@ -428,12 +428,12 @@ function agregarRelease(){
             });
             document.getElementById("historiasI").disabled = true;
             //Fin Petición Ajax
-            alertify.success('Se realizo correctamente la asignación del release');
+            alertify.success('Se realizó correctamente la asignación del release');
         }else{
             alertify.error('No se agregó el valor del número de historias');
         }
     },function(){
-        alertify.error('No se realizo la asignación del release');
+        alertify.error('No se realizó la asignación del release');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, abrirR());
 }
 
@@ -530,7 +530,7 @@ function agregarComentario(idTarea, nombreT){
             alertify.error('No existe un comentario');
         }
     },function(){
-        alertify.error('No se realizo la asignación del comentario');
+        alertify.error('No se realizó la asignación del comentario');
     }).set({labels:{ok:'Aceptar', cancel: 'Cancelar'}, padding: false,}, setComentario(nombreT));
 }
 
